@@ -1,0 +1,91 @@
+//29 Sep 20 Raging Bull "to tame a raging bull with an infinite field" but starting first with a simpler circle that changes when mouse is moved.
+// Able to get the color change as desired. 
+//Added mouseclick to reset world statem
+// p5JS code
+
+// Wishlist of program below
+
+//WorldState -> image
+//this function set-up the initial world state
+
+//given:  expect: 
+//canvas:  should be 200 pixels by 400 pixels
+//starting image: circle, black
+
+//WorldState (image Clocktick Mouse-events) -> WorldState (image)
+// Calls the functions for image, clock tick, mouse events to affect new world-state
+// starting image’s movement: random vibration on x and y axis
+// clock tick: call
+// Mouse event function: call
+
+//Clock tick -> WorldState
+//With each passing tick, 1) movement of image reduces to zero, and 2) color gradually reduces to white 
+// ideally, 1) & 2) happens very slowly (over 3mins/180s)
+
+//Mouse event function 
+// with every movement of the mouse, the world state’s movement goes back to the initial 
+// with every moment of the mouse, the world state’s movement increases
+
+
+function setup() {
+  createCanvas(400, 400);
+
+}
+
+let value = 0;
+let circleX = 200;
+let circleY = 200;
+let perturbation = 5;
+let clockSwitch = true; // Boolean to turn on/off clock
+function draw() {
+  background(255);
+  clockTick();
+  //mouseMoved();
+  circleImage();
+}
+
+function circleImage() {
+  fill(value);
+  circle(circleX, circleY, 150);
+  circleX += random(-perturbation, perturbation);
+  if (circleX < 0 || circleX > 400) {
+    circleX = 200;
+  }
+  circleY += random(-perturbation, perturbation);
+  if (circleY < 0 || circleY > 400) {
+    circleY = 200;
+  }
+}
+
+function mouseMoved() {
+  value = value - 15;
+  perturbation = 5;
+  clockSwitch = true;
+  // if (value > 255) {
+  // value = 0;
+  //}
+  return false;
+}
+
+function mousePressed() {
+  value = 0;
+}
+
+//With each passing tick, 1) movement of image reduces to zero, and 2) color gradually reduces to white 
+// ideally, 1) & 2) happens very slowly (over 3mins/180s)
+function clockTick() {
+
+  let timer = millis();
+  if (timer > 0) {
+    value += (255 / 600);
+    perturbation -= (5 / 600);
+    if (perturbation < 0) {
+      perturbation = 0;
+    }
+  } else if (timer > 600) {
+    value = 255;
+    perturbation = 0;
+    clockSwitch = false;
+  }
+
+}
